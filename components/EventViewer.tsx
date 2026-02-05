@@ -55,29 +55,63 @@ const EventViewer: React.FC<EventViewerProps> = ({
   const currentTrack = isPlaylist ? event.playlist?.[activePlaylistIndex] : null;
 
   return (
-    <div className="flex-1 relative overflow-hidden flex flex-col">
+    <div className="flex-1 relative overflow-hidden flex flex-col bg-vinyl-black">
       
-      {/* BACKGROUND MULTI-CAPA: Máxima fluidez y caché nativa */}
-      <div className="absolute inset-0 z-0 bg-black">
+      {/* 
+         BACKGROUND SYSTEM REFACTORIZADO 
+         1. Capa Ambiental: Imagen desenfocada que llena toda la pantalla (evita bordes negros vacíos).
+         2. Capa Contenida: La imagen nítida centrada con "object-contain" para respetar límites.
+      */}
+      
+      {/* 1. Fondo Ambiental (Blur) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {STANDBY_IMAGES.map((img, index) => (
           <div 
-            key={index}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[2000ms] ${index === currentBgIndex ? 'opacity-100' : 'opacity-0'}`}
+            key={`blur-${index}`}
+            className={`absolute inset-0 bg-cover bg-center blur-3xl scale-110 transition-opacity duration-[2000ms] ease-in-out ${index === currentBgIndex ? 'opacity-30' : 'opacity-0'}`}
             style={{ backgroundImage: `url(${img})` }}
           />
         ))}
+        {/* Textura de ruido suave */}
+        <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay" />
       </div>
 
-      <div className={`absolute inset-0 bg-black z-0 transition-opacity duration-700 ${event ? 'opacity-85' : 'opacity-40'}`} />
+      {/* 2. Carrusel Principal (Marco Contenido) */}
+      <div className={`absolute inset-0 z-0 flex items-center justify-center transition-all duration-1000 ${event ? 'scale-95 opacity-20 blur-sm' : 'scale-100 opacity-100'}`}>
+         {/* Contenedor con límites máximos para PC */}
+         <div className="relative w-full h-full p-6 md:p-12 lg:p-16 flex items-center justify-center">
+            {STANDBY_IMAGES.map((img, index) => (
+              <div 
+                key={`main-${index}`}
+                className={`
+                  absolute inset-6 md:inset-12 lg:inset-16 
+                  bg-contain bg-center bg-no-repeat 
+                  transition-all duration-[2000ms] ease-in-out
+                  ${index === currentBgIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
+                `}
+                style={{ backgroundImage: `url(${img})` }}
+              >
+                 {/* Sombra proyectada para dar efecto de "marco" flotante */}
+                 <div className={`w-full h-full shadow-2xl transition-opacity duration-[2000ms] ${index === currentBgIndex ? 'opacity-100' : 'opacity-0'}`} />
+              </div>
+            ))}
+         </div>
+      </div>
+
+      {/* 3. Overlay Oscuro para Modo Evento */}
+      <div className={`absolute inset-0 bg-black z-0 transition-opacity duration-700 pointer-events-none ${event ? 'opacity-90' : 'opacity-0'}`} />
       
       <audio ref={audioRef} src={audioSrc} onEnded={onAudioEnded} />
       
+      {/* CONTENIDO (Z-INDEX SUPERIOR) */}
       <div className="relative z-10 flex-1 flex flex-col items-center p-4 md:p-12 overflow-y-auto w-full custom-scrollbar">
         
         {!event ? (
-          <div className="w-full h-full flex flex-col justify-end items-center pb-32 animate-fade-in">
-            <div className="w-full max-w-lg text-center bg-black/30 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-2xl">
-              <h2 className="font-display text-4xl text-white tracking-widest uppercase">Esperando Señal</h2>
+          <div className="w-full h-full flex flex-col justify-end items-center pb-32 animate-fade-in pointer-events-none">
+            {/* El pointer-events-none permite ver la imagen "detrás" sin bloquear clicks si hubiera interactividad, 
+                aunque aquí el contenido es visual. El texto tiene pointer-events-auto si fuera necesario. */}
+            <div className="w-full max-w-lg text-center bg-black/40 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl pointer-events-auto">
+              <h2 className="font-display text-4xl text-white tracking-widest uppercase text-shadow-glow">Esperando Señal</h2>
               <p className="font-mono text-neon-red mt-2 tracking-widest text-sm animate-pulse uppercase">Radio Global Online</p>
               <div className="mt-4 text-gray-400 font-mono text-[10px] uppercase tracking-[0.2em]">
                  Frecuencia: {LOBBY_AUDIO_TRACKS[globalTrackIndex].title}
@@ -163,12 +197,6 @@ const EventViewer: React.FC<EventViewerProps> = ({
                        </div>
                     ) : (
                        <div className="relative flex flex-col items-center w-full">
-                          {/* 
-                             Ajuste de Imagen Responsiva:
-                             - w-auto h-auto + max-h/max-w: Mantiene aspect ratio original.
-                             - max-h-[50vh] (móvil) / max-h-[65vh] (desktop): Evita que la imagen ocupe toda la altura vertical.
-                             - object-contain: Asegura que la imagen entera sea visible sin recortes.
-                          */}
                           <img 
                             src={event.image} 
                             className="w-auto h-auto max-w-full md:max-w-3xl max-h-[45vh] md:max-h-[65vh] object-contain rounded-2xl shadow-2xl border border-white/20 bg-black/50" 
@@ -207,6 +235,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
       <style>{`
         .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .text-shadow-glow { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
         .custom-scrollbar-light::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar-light::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 10px; }
       `}</style>
