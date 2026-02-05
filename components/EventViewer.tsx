@@ -219,12 +219,12 @@ const EventViewer: React.FC<EventViewerProps> = ({
                     ) : (
                        <div className="relative flex flex-col items-center w-full">
                           {/* 
-                             Imagen contenida con altura máxima ajustada para móvil 
-                             (max-h-[40vh]) para asegurar que el texto de abajo se vea.
+                             CAMBIO: max-h-[30vh] en móvil para reducir el tamaño visual de la foto
+                             y permitir ver el texto de abajo sin tanto scroll.
                           */}
                           <img 
                             src={event.image} 
-                            className="w-auto h-auto max-w-full md:max-w-3xl max-h-[40vh] md:max-h-[65vh] object-contain rounded-xl md:rounded-2xl shadow-2xl border border-white/20 bg-black/50" 
+                            className="w-auto h-auto max-w-full md:max-w-3xl max-h-[30vh] md:max-h-[50vh] object-contain rounded-xl md:rounded-2xl shadow-2xl border border-white/20 bg-black/50" 
                             alt={event.title}
                           />
                           

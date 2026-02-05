@@ -5,17 +5,18 @@ export const EVENT_DATE_ISO = '2026-05-02';
 
 const dropboxRaw = (url: string) => url.replace('dl=0', 'dl=1');
 
-// --- FOTOS EXCLUSIVAS DEL CARRUSEL (LOBBY) ---
+// --- FOTOS LOCALES (PROYECTO) ---
+// NOTA: Debes crear una carpeta 'public/images' y guardar tus fotos ahí con estos nombres.
 export const STANDBY_IMAGES = [
-  dropboxRaw('https://www.dropbox.com/scl/fi/fgt7owr1929uhu9quf7s7/DSC00825.jpg?rlkey=2suo1mrqc9rwahyl23c33jsgl&st=i5n9mghh&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/8akfqr80af7c191v6bbki/IMG_20181012_114144.jpg?rlkey=br76nll9ng61mudonzoen54bq&st=p12t9qrt&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/ewuhwl5l5k7ddampon3u2/IMG_20181012_131809.jpg?rlkey=fdz9dmtagts100x8hpgcpdflr&st=lg40yl3u&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/fzscef1djlzf1mqxz4uir/IMG_20190502_200637.jpg?rlkey=9fev1ir3quxp19dk0iqadar4n&st=g2ek3k88&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/2jl2dltoj9v0447fs7qzy/IMG-20151128-WA0006.jpg?rlkey=1jk0xvp32pyuijip2odd0fe1i&st=g1bpyx9w&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/p56n6t34532up9h2t25tm/IMG-20180706-WA0063.jpg?rlkey=5t55hclmy1m0zzt6ec8h8rybj&st=jeyqhwj0&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/gmez8u530jix8z41513ep/IMG-20240622-WA0020.jpg?rlkey=jgdgj4bkq2w0pmhwloq03xqw&st=wxvvabwv&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/hxxz1cadp4x68jyweihl0/IMG-20260204-WA0011.jpg?rlkey=ba9sh2qp7rh9x01tv5ckpu78z&st=hltfaf6b&dl=0'),
-  dropboxRaw('https://www.dropbox.com/scl/fi/zl62ztx6ip6cxktprmtil/IMG-20260204-WA0012.jpg?rlkey=os2uaccs2k8vfcruj1zrtq1bo&st=36opp7em&dl=0'),
+  '/images/lobby-1.jpg',
+  '/images/lobby-2.jpg',
+  '/images/lobby-3.jpg',
+  '/images/lobby-4.jpg',
+  '/images/lobby-5.jpg',
+  '/images/lobby-6.jpg',
+  '/images/lobby-7.jpg',
+  '/images/lobby-8.jpg',
+  '/images/lobby-9.jpg',
 ];
 
 export const LOBBY_AUDIO_TRACKS: LobbyTrack[] = [
@@ -33,7 +34,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Inicialización del Sistema',
     description: 'Bienvenida a tus 40 años. El día comienza con lujo y una vista espectacular. Respira profundo, una nueva era comienza hoy con este desayuno especial.',
     location: 'Habitación Principal',
-    image: dropboxRaw('https://www.dropbox.com/scl/fi/tceail75sxqjs3p21c3ab/desayuno.jpg?rlkey=uerp4rrv2t0g2ipdn6pv1q7m9&st=yw4q8s10&dl=0'),
+    image: '/images/event-intro.jpg',
     type: 'moment',
     hint: 'Próximo: Un artefacto brillante te espera...',
   },
@@ -44,7 +45,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Objeto Encriptado Detectado',
     description: 'Una pieza atemporal para un alma eterna. Abre la caja de terciopelo. Una cadena forjada para mantener los recuerdos cerca de tu corazón.',
     location: 'El Cuarto Azul',
-    image: dropboxRaw('https://www.dropbox.com/scl/fi/zjfhgcpq4hwgkzq2wdukk/image.jpg?rlkey=qt1zpc6qsn4za6vrd22qcip44&st=kxfep4vt&dl=0'),
+    image: '/images/event-gift.jpg',
     type: 'moment',
     hint: 'Próximo: Palabras destinadas solo para ti...',
   },
@@ -55,7 +56,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Archivo de Datos Personales',
     description: 'Mi Querida Abigail, \n\nCuarenta años no es solo una medida de tiempo, sino una medida de la luz que has traído a este mundo...',
     location: 'Lounge Privado',
-    image: dropboxRaw('https://www.dropbox.com/scl/fi/2a9lu51i5qbqit0eplncp/sobre-del-arte-vintage-con-el-sello-rojo-de-la-cera-para-correspondencia-109498533.jpg?rlkey=5b2kzpn3fz6hyccu3ghzq83kq&st=b4n1ph08&dl=0'), 
+    image: '/images/event-letter.jpg', 
     type: 'letter',
     hint: 'Próximo: La frecuencia del día se revela...',
   },
@@ -66,7 +67,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Flujo de Audio Decodificado',
     description: 'Acceso concedido a la banda sonora "Abigail Vol. 40". Selecciona una pista para ver su letra.',
     location: 'Transmisión Global',
-    image: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=2670&auto=format&fit=crop',
+    image: '/images/event-playlist.jpg', // Puedes usar cualquier foto genérica o la de Unsplash descargada
     type: 'playlist',
     playlist: [
       { 
@@ -121,7 +122,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Stream de Datos Visuales',
     description: 'Una compilación de mensajes de aquellos que te aman. Señales recibidas desde todos los rincones del mundo.',
     location: 'Cine de la Sala',
-    image: dropboxRaw('https://www.dropbox.com/scl/fi/fzscef1djlzf1mqxz4uir/IMG_20190502_200637.jpg?rlkey=9fev1ir3quxp19dk0iqadar4n&st=g2ek3k88&dl=0'),
+    image: '/images/event-video.jpg', // Miniatura del video
     type: 'video',
     videoUrl: dropboxRaw('https://www.dropbox.com/scl/fi/sz5ugs4e4ft4fagptvkts/lv_0_20251224132333.mp4?rlkey=bxu21fuu7yf1q36tz1ua50rst&st=kmiephms&dl=0'),
     hint: 'Próximo: Prepárate para la extracción...',
@@ -133,7 +134,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Coordenadas Subidas',
     description: 'El vehículo está esperando abajo. El destino es clasificado. Código de vestimenta: Icónico.',
     location: 'Calles de la Ciudad',
-    image: dropboxRaw('https://www.dropbox.com/scl/fi/udkjgw61tetva5bu6vpp0/detalle_Ch-fer-abriendo-la-puerta.jpg?rlkey=8uzgioa744bfkd01rbzsc9hxo&st=rbw318hk&dl=0'),
+    image: '/images/event-outing.jpg',
     type: 'moment',
     hint: 'Próximo: La frecuencia final...',
   },
@@ -144,7 +145,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Velocidad Máxima',
     description: 'La hora dorada ha terminado. Ahora brillamos en la oscuridad. Bienvenida al evento principal.',
     location: 'Ubicación Secreta',
-    image: dropboxRaw('https://www.dropbox.com/scl/fi/aygsttltkal4g5l8jxfa7/salon.jpg?rlkey=vcv5caw5hz5bcd9f1vgwgcbe8&st=w0344zis&dl=0'),
+    image: '/images/event-party.jpg',
     type: 'music',
     hint: 'Sistema recargando para el año 41...',
   }
