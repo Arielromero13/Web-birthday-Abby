@@ -104,14 +104,26 @@ const App: React.FC = () => {
         : currentEvent?.title || 'Radio Offline');
 
   return (
-    <div className={`flex flex-col h-screen bg-vinyl-black text-gray-200 font-sans overflow-hidden relative ${isTestMode ? 'border-2 border-neon-red/20' : ''}`}>
+    // CAMBIO: h-[100dvh] asegura que ocupe el viewport real en móviles
+    <div className={`flex flex-col h-[100dvh] bg-vinyl-black text-gray-200 font-sans overflow-hidden relative ${isTestMode ? 'border-2 border-neon-red/20' : ''}`}>
       <div className="absolute inset-0 z-50 pointer-events-none crt-overlay opacity-30"></div>
       
       {isTestMode && (
         <div className="absolute top-0 left-0 w-full bg-neon-red/80 text-white text-[10px] font-mono text-center py-1 z-[100] tracking-[0.5em] uppercase animate-pulse">
-          Modo Test Activo - Todos los archivos desbloqueados
+          Modo Test Activo
         </div>
       )}
+
+      {/* CAMBIO: Controls ahora está PRIMERO en el DOM para aparecer arriba visualmente */}
+      <Controls 
+        onPrev={handlePrev}
+        onNext={handleNext}
+        onTogglePlay={() => setIsPlaying(!isPlaying)}
+        isPlaying={isPlaying}
+        canPrev={true}
+        canNext={true}
+        title={controlTitle}
+      />
 
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
         <Sidebar 
@@ -133,16 +145,6 @@ const App: React.FC = () => {
           onSelectPlaylistTrack={setPlaylistTrackIndex}
         />
       </div>
-
-      <Controls 
-        onPrev={handlePrev}
-        onNext={handleNext}
-        onTogglePlay={() => setIsPlaying(!isPlaying)}
-        isPlaying={isPlaying}
-        canPrev={true}
-        canNext={true}
-        title={controlTitle}
-      />
     </div>
   );
 };

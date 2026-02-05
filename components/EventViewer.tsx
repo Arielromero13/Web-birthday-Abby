@@ -24,7 +24,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
   const [videoLoaded, setVideoLoaded] = useState(false); 
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
-  // Carrusel de fondo: Mantenemos todas las imágenes cargadas para transiciones suaves
+  // Carrusel de fondo
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBgIndex((prev) => (prev + 1) % STANDBY_IMAGES.length);
@@ -55,12 +55,12 @@ const EventViewer: React.FC<EventViewerProps> = ({
   const currentTrack = isPlaylist ? event.playlist?.[activePlaylistIndex] : null;
 
   return (
-    <div className="flex-1 relative overflow-hidden flex flex-col bg-vinyl-black">
+    // CAMBIO: order-1 en móvil (arriba), md:order-none (derecha/normal en desktop).
+    // h-full asegura que use el espacio restante disponible.
+    <div className="relative overflow-hidden flex flex-col bg-vinyl-black order-1 md:order-none flex-1 h-full w-full border-b md:border-b-0 md:border-l border-white/10">
       
       {/* 
-         BACKGROUND SYSTEM REFACTORIZADO 
-         1. Capa Ambiental: Imagen desenfocada que llena toda la pantalla (evita bordes negros vacíos).
-         2. Capa Contenida: La imagen nítida centrada con "object-contain" para respetar límites.
+         BACKGROUND SYSTEM
       */}
       
       {/* 1. Fondo Ambiental (Blur) */}
@@ -72,104 +72,101 @@ const EventViewer: React.FC<EventViewerProps> = ({
             style={{ backgroundImage: `url(${img})` }}
           />
         ))}
-        {/* Textura de ruido suave */}
         <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay" />
       </div>
 
       {/* 2. Carrusel Principal (Marco Contenido) */}
       <div className={`absolute inset-0 z-0 flex items-center justify-center transition-all duration-1000 ${event ? 'scale-95 opacity-20 blur-sm' : 'scale-100 opacity-100'}`}>
-         {/* Contenedor con límites máximos para PC */}
-         <div className="relative w-full h-full p-6 md:p-12 lg:p-16 flex items-center justify-center">
+         {/* En móvil inset-0 para aprovechar cada pixel, en desktop marco elegante */}
+         <div className="relative w-full h-full p-0 md:p-12 lg:p-16 flex items-center justify-center">
             {STANDBY_IMAGES.map((img, index) => (
               <div 
                 key={`main-${index}`}
                 className={`
-                  absolute inset-6 md:inset-12 lg:inset-16 
+                  absolute inset-0 md:inset-12 lg:inset-16 
                   bg-contain bg-center bg-no-repeat 
                   transition-all duration-[2000ms] ease-in-out
                   ${index === currentBgIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
                 `}
                 style={{ backgroundImage: `url(${img})` }}
               >
-                 {/* Sombra proyectada para dar efecto de "marco" flotante */}
-                 <div className={`w-full h-full shadow-2xl transition-opacity duration-[2000ms] ${index === currentBgIndex ? 'opacity-100' : 'opacity-0'}`} />
+                 <div className={`w-full h-full shadow-2xl transition-opacity duration-[2000ms] hidden md:block ${index === currentBgIndex ? 'opacity-100' : 'opacity-0'}`} />
               </div>
             ))}
          </div>
       </div>
 
-      {/* 3. Overlay Oscuro para Modo Evento */}
+      {/* 3. Overlay Oscuro */}
       <div className={`absolute inset-0 bg-black z-0 transition-opacity duration-700 pointer-events-none ${event ? 'opacity-90' : 'opacity-0'}`} />
       
       <audio ref={audioRef} src={audioSrc} onEnded={onAudioEnded} />
       
-      {/* CONTENIDO (Z-INDEX SUPERIOR) */}
-      <div className="relative z-10 flex-1 flex flex-col items-center p-4 md:p-12 overflow-y-auto w-full custom-scrollbar">
+      {/* CONTENIDO PRINCIPAL SCROLLABLE */}
+      {/* Padding reducido drásticamente en móvil (p-2) */}
+      <div className="relative z-10 flex-1 flex flex-col items-center p-2 md:p-12 overflow-y-auto w-full custom-scrollbar">
         
         {!event ? (
-          <div className="w-full h-full flex flex-col justify-end items-center pb-32 animate-fade-in pointer-events-none">
-            {/* El pointer-events-none permite ver la imagen "detrás" sin bloquear clicks si hubiera interactividad, 
-                aunque aquí el contenido es visual. El texto tiene pointer-events-auto si fuera necesario. */}
-            <div className="w-full max-w-lg text-center bg-black/40 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl pointer-events-auto">
-              <h2 className="font-display text-4xl text-white tracking-widest uppercase text-shadow-glow">Esperando Señal</h2>
-              <p className="font-mono text-neon-red mt-2 tracking-widest text-sm animate-pulse uppercase">Radio Global Online</p>
+          <div className="w-full h-full flex flex-col justify-center items-center animate-fade-in pointer-events-none pb-12">
+            <div className="w-[90%] md:w-full max-w-lg text-center bg-black/40 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl pointer-events-auto">
+              <h2 className="font-display text-3xl md:text-4xl text-white tracking-widest uppercase text-shadow-glow">Esperando Señal</h2>
+              <p className="font-mono text-neon-red mt-2 tracking-widest text-xs md:text-sm animate-pulse uppercase">Radio Global Online</p>
               <div className="mt-4 text-gray-400 font-mono text-[10px] uppercase tracking-[0.2em]">
                  Frecuencia: {LOBBY_AUDIO_TRACKS[globalTrackIndex].title}
               </div>
             </div>
           </div>
         ) : (
-          <div className="w-full flex flex-col items-center animate-fade-in pb-20 md:pb-0">
+          <div className="w-full flex flex-col items-center animate-fade-in pb-10">
             
-            {/* Cabecera de Evento */}
-            <div className="w-full max-w-5xl mb-6 md:mb-8 flex justify-between items-end border-b border-white/10 pb-4">
-               <div>
-                  <span className="font-mono text-neon-blue text-[10px] tracking-[0.3em] uppercase">Abigail Vol. 40 • Mission Timeline</span>
-                  <h1 className="text-2xl md:text-4xl font-display font-bold text-white uppercase tracking-tight">{event.title}</h1>
+            {/* Cabecera Compacta */}
+            <div className="w-full max-w-5xl mb-2 md:mb-8 flex flex-col md:flex-row justify-between md:items-end border-b border-white/10 pb-2 md:pb-4 gap-1">
+               <div className="text-center md:text-left">
+                  <span className="font-mono text-neon-blue text-[8px] md:text-[10px] tracking-[0.3em] uppercase block mb-1">Mission Timeline</span>
+                  <h1 className="text-xl md:text-4xl font-display font-bold text-white uppercase tracking-tight leading-none">{event.title}</h1>
                </div>
-               <div className="font-mono text-xs md:text-sm text-gray-500 bg-white/5 px-2 md:px-3 py-1 rounded border border-white/10 whitespace-nowrap ml-4">{event.time}</div>
+               <div className="self-center md:self-auto font-mono text-[9px] md:text-sm text-gray-400 bg-white/5 px-2 md:px-3 py-0.5 rounded border border-white/10 w-fit mt-1 md:mt-0">{event.time}</div>
             </div>
 
             {/* CONTENIDO SEGÚN TIPO */}
             {event.type === 'playlist' ? (
-              <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-8">
-                {/* Lista de tracks */}
-                <div className="lg:w-1/3 flex flex-col gap-4">
+              <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-3 md:gap-8 h-full">
+                {/* 
+                   Lista de tracks (Playlist) 
+                   Móvil: Max-Height restringido para ver letras abajo.
+                */}
+                <div className="lg:w-1/3 flex flex-col gap-2 md:gap-4 shrink-0">
                   <div className="bg-black/60 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden shadow-2xl">
-                    <div className="p-4 border-b border-white/5 bg-white/5">
-                      <h3 className="font-display text-sm text-white tracking-widest uppercase">Master Recordings</h3>
+                    <div className="p-2 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                      <h3 className="font-display text-[10px] md:text-sm text-white tracking-widest uppercase">Select Track</h3>
+                      <span className="text-[9px] text-neon-red font-mono">{activePlaylistIndex + 1}/{event.playlist?.length}</span>
                     </div>
-                    <div className="divide-y divide-white/5 max-h-[30vh] lg:max-h-[50vh] overflow-y-auto custom-scrollbar">
+                    {/* Altura muy controlada en móvil: max-h-[140px] para que no ocupe toda la pantalla */}
+                    <div className="divide-y divide-white/5 max-h-[140px] lg:max-h-[50vh] overflow-y-auto custom-scrollbar">
                       {event.playlist?.map((track, idx) => (
                         <button key={idx} onClick={() => onSelectPlaylistTrack(idx)}
-                          className={`w-full flex items-center p-4 hover:bg-white/10 transition-colors text-left ${activePlaylistIndex === idx ? 'bg-white/10' : ''}`}>
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-4 shrink-0 font-mono text-xs ${activePlaylistIndex === idx ? 'bg-neon-red text-white' : 'bg-gray-800 text-gray-400'}`}>
+                          className={`w-full flex items-center p-2 md:p-4 hover:bg-white/10 transition-colors text-left ${activePlaylistIndex === idx ? 'bg-white/10' : ''}`}>
+                          <div className={`w-5 h-5 md:w-8 md:h-8 rounded-full flex items-center justify-center mr-2 md:mr-3 shrink-0 font-mono text-[9px] md:text-xs ${activePlaylistIndex === idx ? 'bg-neon-red text-white' : 'bg-gray-800 text-gray-400'}`}>
                             {idx + 1}
                           </div>
-                          <div className="truncate">
-                            <div className={`font-bold text-sm truncate ${activePlaylistIndex === idx ? 'text-neon-red' : 'text-gray-100'}`}>{track.title}</div>
-                            <div className="text-[10px] text-gray-500 uppercase font-mono">{track.artist}</div>
+                          <div className="truncate min-w-0">
+                            <div className={`font-bold text-xs md:text-sm truncate ${activePlaylistIndex === idx ? 'text-neon-red' : 'text-gray-100'}`}>{track.title}</div>
+                            <div className="text-[8px] md:text-[10px] text-gray-500 uppercase font-mono truncate">{track.artist}</div>
                           </div>
                         </button>
                       ))}
                     </div>
                   </div>
-                  {/* Hint visible en Playlist */}
-                  <div className="p-5 bg-neon-blue/5 border border-neon-blue/20 rounded-xl">
-                     <p className="text-[10px] font-mono text-neon-blue uppercase mb-2 tracking-widest">Pista de Desbloqueo:</p>
-                     <p className="text-sm text-gray-300 italic font-light leading-relaxed">"{event.hint}"</p>
-                  </div>
                 </div>
 
-                {/* Visor de Letras */}
-                <div className="lg:w-2/3 bg-[#fcfbf7] text-neutral-800 rounded-sm shadow-2xl border-x-[4px] md:border-x-[12px] border-white/10 relative overflow-hidden">
-                   <div className="p-6 md:p-12 overflow-y-auto max-h-[50vh] md:max-h-[70vh] custom-scrollbar-light">
-                      <div className="border-b border-neutral-200 pb-6 mb-8">
-                         <h2 className="font-display font-black text-2xl md:text-4xl uppercase tracking-tighter text-neutral-900 leading-none">{currentTrack?.title}</h2>
-                         <p className="font-mono text-xs text-neutral-400 mt-2 uppercase tracking-widest">{currentTrack?.artist} • Studio Anniversary Mix</p>
+                {/* Visor de Letras (Ocupa el resto) */}
+                <div className="lg:w-2/3 bg-[#fcfbf7] text-neutral-800 rounded-lg shadow-2xl border-l-[4px] md:border-l-[12px] border-white/10 relative overflow-hidden flex-1 min-h-[300px]">
+                   <div className="p-4 md:p-12 overflow-y-auto h-full custom-scrollbar-light absolute inset-0">
+                      <div className="border-b border-neutral-200 pb-2 mb-3 md:pb-6 md:mb-8 sticky top-0 bg-[#fcfbf7]/95 backdrop-blur z-10">
+                         <h2 className="font-display font-black text-lg md:text-4xl uppercase tracking-tighter text-neutral-900 leading-none">{currentTrack?.title}</h2>
+                         <p className="font-mono text-[9px] md:text-xs text-neutral-400 mt-1 uppercase tracking-widest">{currentTrack?.artist}</p>
                       </div>
-                      <div className="font-serif text-lg md:text-2xl leading-relaxed whitespace-pre-line opacity-90 text-neutral-700 italic">
-                         {currentTrack?.lyrics || "Esta pista es una pieza instrumental compuesta para este momento."}
+                      <div className="font-serif text-sm md:text-2xl leading-relaxed whitespace-pre-line opacity-90 text-neutral-700 italic pb-12">
+                         {currentTrack?.lyrics || "Instrumental."}
                       </div>
                    </div>
                 </div>
@@ -177,9 +174,9 @@ const EventViewer: React.FC<EventViewerProps> = ({
             ) : (
               <div className="w-full flex flex-col items-center">
                  {/* Contenedor Visual (Imagen/Video) */}
-                 <div className="relative mb-8 w-full max-w-5xl flex justify-center">
+                 <div className="relative mb-4 md:mb-8 w-full max-w-5xl flex justify-center">
                     {event.type === 'video' ? (
-                       <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black">
+                       <div className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black">
                           {videoLoaded ? (
                              <video src={event.videoUrl} controls autoPlay className="w-full h-full object-contain" playsInline />
                           ) : (
@@ -190,22 +187,26 @@ const EventViewer: React.FC<EventViewerProps> = ({
                                   <button className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-neon-red/90 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
                                     <svg className="w-8 h-8 md:w-12 md:h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                   </button>
-                                  <span className="font-mono text-xs text-white uppercase tracking-widest animate-pulse">Desencriptar Archivo Visual</span>
+                                  <span className="font-mono text-xs text-white uppercase tracking-widest animate-pulse">Reproducir</span>
                                </div>
                              </div>
                           )}
                        </div>
                     ) : (
                        <div className="relative flex flex-col items-center w-full">
+                          {/* 
+                             Imagen contenida con altura máxima ajustada para móvil 
+                             (max-h-[40vh]) para asegurar que el texto de abajo se vea.
+                          */}
                           <img 
                             src={event.image} 
-                            className="w-auto h-auto max-w-full md:max-w-3xl max-h-[45vh] md:max-h-[65vh] object-contain rounded-2xl shadow-2xl border border-white/20 bg-black/50" 
+                            className="w-auto h-auto max-w-full md:max-w-3xl max-h-[40vh] md:max-h-[65vh] object-contain rounded-xl md:rounded-2xl shadow-2xl border border-white/20 bg-black/50" 
                             alt={event.title}
                           />
                           
                           {event.type === 'letter' && (
-                             <div className="mt-6 md:mt-8 bg-[#e3dcd2] text-black p-6 md:p-8 rounded shadow-2xl w-full max-w-xl md:max-w-2xl border-t-8 border-neon-red transform md:-rotate-1">
-                                <p className="font-serif italic text-lg md:text-2xl leading-relaxed text-neutral-800">"{event.description}"</p>
+                             <div className="mt-4 md:mt-8 bg-[#e3dcd2] text-black p-4 md:p-8 rounded shadow-2xl w-full max-w-xl md:max-w-2xl border-t-8 border-neon-red transform md:-rotate-1">
+                                <p className="font-serif italic text-sm md:text-2xl leading-relaxed text-neutral-800">"{event.description}"</p>
                              </div>
                           )}
                        </div>
@@ -213,16 +214,16 @@ const EventViewer: React.FC<EventViewerProps> = ({
                  </div>
 
                  {event.type !== 'letter' && (
-                    <div className="max-w-3xl w-full text-center space-y-6 md:space-y-8">
-                      <p className="text-lg md:text-2xl text-gray-200 font-light leading-relaxed px-4">{event.description}</p>
+                    <div className="max-w-3xl w-full text-center space-y-4 md:space-y-8 pb-4">
+                      <p className="text-sm md:text-2xl text-gray-200 font-light leading-relaxed px-2">{event.description}</p>
                       
                       {/* Hint del Sistema (Pista) */}
-                      <div className="inline-block w-full max-w-lg bg-black/40 border border-white/10 p-4 md:p-6 rounded-xl text-left shadow-xl backdrop-blur-sm mx-auto">
-                        <div className="flex items-center gap-3 mb-3">
-                           <div className="w-3 h-3 rounded-full bg-neon-blue animate-pulse shadow-[0_0_8px_#00f3ff]" />
-                           <span className="text-xs font-mono text-neon-blue uppercase tracking-[0.3em] font-bold">Protocolo de Búsqueda</span>
+                      <div className="inline-block w-[95%] md:w-full max-w-lg bg-black/40 border border-white/10 p-3 md:p-4 rounded-xl text-left shadow-xl backdrop-blur-sm mx-auto">
+                        <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+                           <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-neon-blue animate-pulse shadow-[0_0_8px_#00f3ff]" />
+                           <span className="text-[9px] md:text-xs font-mono text-neon-blue uppercase tracking-[0.3em] font-bold">Protocolo</span>
                         </div>
-                        <p className="text-sm md:text-base text-gray-400 font-mono italic leading-relaxed">"{event.hint}"</p>
+                        <p className="text-[11px] md:text-base text-gray-400 font-mono italic leading-relaxed">"{event.hint}"</p>
                       </div>
                     </div>
                  )}
@@ -236,7 +237,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
         .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .text-shadow-glow { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
-        .custom-scrollbar-light::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar-light::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar-light::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 10px; }
       `}</style>
     </div>
