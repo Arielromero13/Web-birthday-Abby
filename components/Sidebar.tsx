@@ -27,12 +27,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   const currentEvent = schedule.find(e => e.id === currentId);
 
   return (
-    <aside className="w-full md:w-80 h-full flex flex-col glass-panel border-r border-white/10 relative z-20">
+    // CAMBIO: h-[35vh] en móvil para permitir ver el visor abajo, md:h-full en desktop
+    <aside className="w-full md:w-80 h-[35vh] md:h-full flex flex-col glass-panel border-r border-white/10 relative z-20 flex-none">
       {/* Header */}
-      <div className="p-6 border-b border-white/10 bg-vinyl-black/80">
+      <div className="p-4 md:p-6 border-b border-white/10 bg-vinyl-black/80 flex-none">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="font-display font-black text-3xl tracking-tighter text-white leading-none">
+            <h1 className="font-display font-black text-2xl md:text-3xl tracking-tighter text-white leading-none">
               ABIGAIL <span className="text-neon-red">VOL. 40</span>
             </h1>
             <p className="font-mono text-[9px] text-neutral-500 mt-2 tracking-[0.2em] uppercase">
@@ -59,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div
           onClick={onSelectLobby}
           className={`
-            group relative p-4 rounded-md border transition-all duration-300 cursor-pointer
+            group relative p-3 md:p-4 rounded-md border transition-all duration-300 cursor-pointer
             ${currentId === null 
               ? 'bg-white/10 border-neon-blue/50 shadow-[0_0_15px_rgba(0,243,255,0.05)]' 
               : 'border-transparent hover:bg-white/5'}
@@ -70,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               00:00
             </span>
           </div>
-          <h3 className={`font-bold text-sm ${currentId === null ? 'text-white' : 'text-gray-400'}`}>
+          <h3 className={`font-bold text-xs md:text-sm ${currentId === null ? 'text-white' : 'text-gray-400'}`}>
             PORTADA / LOBBY
           </h3>
         </div>
@@ -86,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               key={event.id}
               onClick={() => isUnlocked && onSelectEvent(index)}
               className={`
-                group relative p-4 rounded-md border transition-all duration-300
+                group relative p-3 md:p-4 rounded-md border transition-all duration-300
                 ${isUnlocked ? 'cursor-pointer hover:bg-white/5' : 'cursor-not-allowed opacity-40'}
                 ${isActive ? 'bg-white/10 border-neon-red/50 shadow-[0_0_15px_rgba(255,0,60,0.05)]' : 'border-transparent'}
               `}
@@ -101,7 +102,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   </span>
                 )}
               </div>
-              <h3 className={`font-bold text-sm truncate ${isUnlocked ? 'text-gray-200' : 'text-gray-600 font-mono italic'}`}>
+              <h3 className={`font-bold text-xs md:text-sm truncate ${isUnlocked ? 'text-gray-200' : 'text-gray-600 font-mono italic'}`}>
                 {isUnlocked ? event.title : 'Segmento Bloqueado'}
               </h3>
             </div>
@@ -110,7 +111,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Pie de Sidebar con Hint Prominente */}
-      <div className="p-6 border-t border-white/10 bg-black/60 backdrop-blur-md">
+      <div className="p-4 md:p-6 border-t border-white/10 bg-black/60 backdrop-blur-md flex-none hidden md:block">
         <p className="text-[10px] text-neutral-500 font-mono mb-3 uppercase tracking-widest">
           Siguiente Objetivo
         </p>

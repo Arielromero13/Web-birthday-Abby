@@ -72,7 +72,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
       
       <audio ref={audioRef} src={audioSrc} onEnded={onAudioEnded} />
       
-      <div className="relative z-10 flex-1 flex flex-col items-center p-6 md:p-12 overflow-y-auto w-full custom-scrollbar">
+      <div className="relative z-10 flex-1 flex flex-col items-center p-4 md:p-12 overflow-y-auto w-full custom-scrollbar">
         
         {!event ? (
           <div className="w-full h-full flex flex-col justify-end items-center pb-32 animate-fade-in">
@@ -85,15 +85,15 @@ const EventViewer: React.FC<EventViewerProps> = ({
             </div>
           </div>
         ) : (
-          <div className="w-full flex flex-col items-center animate-fade-in">
+          <div className="w-full flex flex-col items-center animate-fade-in pb-20 md:pb-0">
             
             {/* Cabecera de Evento */}
-            <div className="w-full max-w-5xl mb-8 flex justify-between items-end border-b border-white/10 pb-4">
+            <div className="w-full max-w-5xl mb-6 md:mb-8 flex justify-between items-end border-b border-white/10 pb-4">
                <div>
                   <span className="font-mono text-neon-blue text-[10px] tracking-[0.3em] uppercase">Abigail Vol. 40 • Mission Timeline</span>
-                  <h1 className="text-3xl md:text-4xl font-display font-bold text-white uppercase tracking-tight">{event.title}</h1>
+                  <h1 className="text-2xl md:text-4xl font-display font-bold text-white uppercase tracking-tight">{event.title}</h1>
                </div>
-               <div className="font-mono text-sm text-gray-500 bg-white/5 px-3 py-1 rounded border border-white/10">{event.time}</div>
+               <div className="font-mono text-xs md:text-sm text-gray-500 bg-white/5 px-2 md:px-3 py-1 rounded border border-white/10 whitespace-nowrap ml-4">{event.time}</div>
             </div>
 
             {/* CONTENIDO SEGÚN TIPO */}
@@ -105,7 +105,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
                     <div className="p-4 border-b border-white/5 bg-white/5">
                       <h3 className="font-display text-sm text-white tracking-widest uppercase">Master Recordings</h3>
                     </div>
-                    <div className="divide-y divide-white/5 max-h-[50vh] overflow-y-auto custom-scrollbar">
+                    <div className="divide-y divide-white/5 max-h-[30vh] lg:max-h-[50vh] overflow-y-auto custom-scrollbar">
                       {event.playlist?.map((track, idx) => (
                         <button key={idx} onClick={() => onSelectPlaylistTrack(idx)}
                           className={`w-full flex items-center p-4 hover:bg-white/10 transition-colors text-left ${activePlaylistIndex === idx ? 'bg-white/10' : ''}`}>
@@ -128,13 +128,13 @@ const EventViewer: React.FC<EventViewerProps> = ({
                 </div>
 
                 {/* Visor de Letras */}
-                <div className="lg:w-2/3 bg-[#fcfbf7] text-neutral-800 rounded-sm shadow-2xl border-x-[12px] border-white/10 relative overflow-hidden">
-                   <div className="p-8 md:p-12 overflow-y-auto max-h-[70vh] custom-scrollbar-light">
+                <div className="lg:w-2/3 bg-[#fcfbf7] text-neutral-800 rounded-sm shadow-2xl border-x-[4px] md:border-x-[12px] border-white/10 relative overflow-hidden">
+                   <div className="p-6 md:p-12 overflow-y-auto max-h-[50vh] md:max-h-[70vh] custom-scrollbar-light">
                       <div className="border-b border-neutral-200 pb-6 mb-8">
-                         <h2 className="font-display font-black text-4xl uppercase tracking-tighter text-neutral-900 leading-none">{currentTrack?.title}</h2>
+                         <h2 className="font-display font-black text-2xl md:text-4xl uppercase tracking-tighter text-neutral-900 leading-none">{currentTrack?.title}</h2>
                          <p className="font-mono text-xs text-neutral-400 mt-2 uppercase tracking-widest">{currentTrack?.artist} • Studio Anniversary Mix</p>
                       </div>
-                      <div className="font-serif text-xl md:text-2xl leading-relaxed whitespace-pre-line opacity-90 text-neutral-700 italic">
+                      <div className="font-serif text-lg md:text-2xl leading-relaxed whitespace-pre-line opacity-90 text-neutral-700 italic">
                          {currentTrack?.lyrics || "Esta pista es una pieza instrumental compuesta para este momento."}
                       </div>
                    </div>
@@ -142,9 +142,10 @@ const EventViewer: React.FC<EventViewerProps> = ({
               </div>
             ) : (
               <div className="w-full flex flex-col items-center">
-                 <div className="relative mb-10 w-full max-w-4xl">
+                 {/* Contenedor Visual (Imagen/Video) */}
+                 <div className="relative mb-8 w-full max-w-5xl flex justify-center">
                     {event.type === 'video' ? (
-                       <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black">
+                       <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black">
                           {videoLoaded ? (
                              <video src={event.videoUrl} controls autoPlay className="w-full h-full object-contain" playsInline />
                           ) : (
@@ -152,8 +153,8 @@ const EventViewer: React.FC<EventViewerProps> = ({
                                   style={{backgroundImage: `url(${event.image})`}} onClick={() => setVideoLoaded(true)}>
                                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors" />
                                <div className="z-10 flex flex-col items-center gap-4">
-                                  <button className="w-24 h-24 rounded-full bg-neon-red/90 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                                    <svg className="w-12 h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                  <button className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-neon-red/90 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                                    <svg className="w-8 h-8 md:w-12 md:h-12 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                   </button>
                                   <span className="font-mono text-xs text-white uppercase tracking-widest animate-pulse">Desencriptar Archivo Visual</span>
                                </div>
@@ -161,11 +162,22 @@ const EventViewer: React.FC<EventViewerProps> = ({
                           )}
                        </div>
                     ) : (
-                       <div className="relative flex flex-col items-center">
-                          <img src={event.image} className="w-64 h-64 md:w-96 md:h-96 object-cover rounded-2xl shadow-2xl border-2 border-white/20" />
+                       <div className="relative flex flex-col items-center w-full">
+                          {/* 
+                             Ajuste de Imagen Responsiva:
+                             - w-auto h-auto + max-h/max-w: Mantiene aspect ratio original.
+                             - max-h-[50vh] (móvil) / max-h-[65vh] (desktop): Evita que la imagen ocupe toda la altura vertical.
+                             - object-contain: Asegura que la imagen entera sea visible sin recortes.
+                          */}
+                          <img 
+                            src={event.image} 
+                            className="w-auto h-auto max-w-full md:max-w-3xl max-h-[45vh] md:max-h-[65vh] object-contain rounded-2xl shadow-2xl border border-white/20 bg-black/50" 
+                            alt={event.title}
+                          />
+                          
                           {event.type === 'letter' && (
-                             <div className="mt-8 bg-[#e3dcd2] text-black p-8 rounded shadow-2xl max-w-2xl border-t-8 border-neon-red transform -rotate-1">
-                                <p className="font-serif italic text-xl md:text-2xl leading-relaxed text-neutral-800">"{event.description}"</p>
+                             <div className="mt-6 md:mt-8 bg-[#e3dcd2] text-black p-6 md:p-8 rounded shadow-2xl w-full max-w-xl md:max-w-2xl border-t-8 border-neon-red transform md:-rotate-1">
+                                <p className="font-serif italic text-lg md:text-2xl leading-relaxed text-neutral-800">"{event.description}"</p>
                              </div>
                           )}
                        </div>
@@ -173,11 +185,11 @@ const EventViewer: React.FC<EventViewerProps> = ({
                  </div>
 
                  {event.type !== 'letter' && (
-                    <div className="max-w-3xl w-full text-center space-y-8">
-                      <p className="text-xl md:text-2xl text-gray-200 font-light leading-relaxed">{event.description}</p>
+                    <div className="max-w-3xl w-full text-center space-y-6 md:space-y-8">
+                      <p className="text-lg md:text-2xl text-gray-200 font-light leading-relaxed px-4">{event.description}</p>
                       
                       {/* Hint del Sistema (Pista) */}
-                      <div className="inline-block w-full max-w-lg bg-black/40 border border-white/10 p-6 rounded-xl text-left shadow-xl backdrop-blur-sm">
+                      <div className="inline-block w-full max-w-lg bg-black/40 border border-white/10 p-4 md:p-6 rounded-xl text-left shadow-xl backdrop-blur-sm mx-auto">
                         <div className="flex items-center gap-3 mb-3">
                            <div className="w-3 h-3 rounded-full bg-neon-blue animate-pulse shadow-[0_0_8px_#00f3ff]" />
                            <span className="text-xs font-mono text-neon-blue uppercase tracking-[0.3em] font-bold">Protocolo de Búsqueda</span>
