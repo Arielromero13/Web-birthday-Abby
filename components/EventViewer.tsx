@@ -56,14 +56,13 @@ const EventViewer: React.FC<EventViewerProps> = ({
 
   return (
     // CAMBIO: order-1 en móvil (arriba), md:order-none (derecha/normal en desktop).
-    // h-full asegura que use el espacio restante disponible.
     <div className="relative overflow-hidden flex flex-col bg-vinyl-black order-1 md:order-none flex-1 h-full w-full border-b md:border-b-0 md:border-l border-white/10">
       
       {/* 
          BACKGROUND SYSTEM
       */}
       
-      {/* 1. Fondo Ambiental (Blur) */}
+      {/* 1. Fondo Ambiental (Blur) - Solo visible cuando hay evento activo o para dar profundidad */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {STANDBY_IMAGES.map((img, index) => (
           <div 
@@ -75,43 +74,68 @@ const EventViewer: React.FC<EventViewerProps> = ({
         <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay" />
       </div>
 
-      {/* 2. Carrusel Principal (Marco Contenido) */}
+      {/* 2. Carrusel Principal (LOBBY MODE) */}
+      {/* CAMBIO: Lógica para que en modo Lobby (!event) la imagen sea bg-cover (Fill) */}
       <div className={`absolute inset-0 z-0 flex items-center justify-center transition-all duration-1000 ${event ? 'scale-95 opacity-20 blur-sm' : 'scale-100 opacity-100'}`}>
-         {/* En móvil inset-0 para aprovechar cada pixel, en desktop marco elegante */}
-         <div className="relative w-full h-full p-0 md:p-12 lg:p-16 flex items-center justify-center">
+         {/* En móvil inset-0 para aprovechar cada pixel, en desktop marco elegante si hay evento */}
+         <div className={`relative w-full h-full flex items-center justify-center ${event ? 'p-0 md:p-12 lg:p-16' : 'p-0'}`}>
             {STANDBY_IMAGES.map((img, index) => (
               <div 
                 key={`main-${index}`}
                 className={`
-                  absolute inset-0 md:inset-12 lg:inset-16 
-                  bg-contain bg-center bg-no-repeat 
+                  absolute 
+                  ${event ? 'inset-0 md:inset-12 lg:inset-16 bg-contain' : 'inset-0 bg-cover'} 
+                  bg-center bg-no-repeat 
                   transition-all duration-[2000ms] ease-in-out
-                  ${index === currentBgIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
+                  ${index === currentBgIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
                 `}
                 style={{ backgroundImage: `url(${img})` }}
               >
+                 {/* Sombra interna para legibilidad en modo fill */}
+                 {!event && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/30" />
+                 )}
+                 
+                 {/* Marco decorativo solo en desktop si hay evento */}
                  <div className={`w-full h-full shadow-2xl transition-opacity duration-[2000ms] hidden md:block ${index === currentBgIndex ? 'opacity-100' : 'opacity-0'}`} />
               </div>
             ))}
          </div>
       </div>
 
-      {/* 3. Overlay Oscuro */}
+      {/* 3. Overlay Oscuro (Solo activo cuando hay un evento seleccionado para oscurecer el fondo) */}
       <div className={`absolute inset-0 bg-black z-0 transition-opacity duration-700 pointer-events-none ${event ? 'opacity-90' : 'opacity-0'}`} />
       
       <audio ref={audioRef} src={audioSrc} onEnded={onAudioEnded} />
       
       {/* CONTENIDO PRINCIPAL SCROLLABLE */}
-      {/* Padding reducido drásticamente en móvil (p-2) */}
+      {/* Padding reducido en móvil */}
       <div className="relative z-10 flex-1 flex flex-col items-center p-2 md:p-12 overflow-y-auto w-full custom-scrollbar">
         
         {!event ? (
-          <div className="w-full h-full flex flex-col justify-center items-center animate-fade-in pointer-events-none pb-12">
-            <div className="w-[90%] md:w-full max-w-lg text-center bg-black/40 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl pointer-events-auto">
-              <h2 className="font-display text-3xl md:text-4xl text-white tracking-widest uppercase text-shadow-glow">Esperando Señal</h2>
-              <p className="font-mono text-neon-red mt-2 tracking-widest text-xs md:text-sm animate-pulse uppercase">Radio Global Online</p>
-              <div className="mt-4 text-gray-400 font-mono text-[10px] uppercase tracking-[0.2em]">
-                 Frecuencia: {LOBBY_AUDIO_TRACKS[globalTrackIndex].title}
+          // CAMBIO: justify-end para mover el mensaje abajo, pb-8 para separarlo del borde/sidebar
+          <div className="w-full h-full flex flex-col justify-end items-center animate-fade-in pointer-events-none pb-8 md:pb-12">
+            <div className="w-[95%] md:w-full max-w-lg text-center bg-black/30 backdrop-blur-xl p-5 md:p-6 rounded-2xl border border-white/10 shadow-2xl pointer-events-auto">
+              {/* CAMBIO: Textos actualizados para mayor expectativa */}
+              <div className="flex justify-center mb-3">
+                 <div className="w-12 h-1 bg-neon-red rounded-full animate-pulse shadow-[0_0_10px_#ff003c]" />
+              </div>
+              
+              <h2 className="font-display text-2xl md:text-4xl text-white tracking-widest uppercase text-shadow-glow leading-none mb-2">
+                Experiencia Vol. 40
+              </h2>
+              
+              <p className="font-mono text-neon-blue/80 tracking-widest text-[10px] md:text-sm uppercase mb-4">
+                Sincronizando Memorias...
+              </p>
+              
+              <div className="border-t border-white/10 pt-3 mt-2">
+                <p className="text-gray-300 font-sans text-xs md:text-sm font-light leading-relaxed">
+                  "Todo está listo para celebrar tu historia. Espera la señal para comenzar."
+                </p>
+                <div className="mt-3 text-neutral-500 font-mono text-[9px] uppercase tracking-[0.2em] animate-pulse">
+                   Audio Actual: {LOBBY_AUDIO_TRACKS[globalTrackIndex].title}
+                </div>
               </div>
             </div>
           </div>
