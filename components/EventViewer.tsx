@@ -41,7 +41,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying && audioSrc) {
-        audioRef.current.play().catch(() => {});
+        audioRef.current.play().catch((e) => console.error("Error reproduciendo audio:", audioSrc, e));
       } else {
         audioRef.current.pause();
       }
@@ -53,6 +53,25 @@ const EventViewer: React.FC<EventViewerProps> = ({
   }, [event?.id]);
 
   const currentTrack = isPlaylist ? event.playlist?.[activePlaylistIndex] : null;
+
+  // Manejador de errores de imagen
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement;
+    // Evita loop infinito
+    if (target.getAttribute('data-failed') === 'true') return;
+    target.setAttribute('data-failed', 'true');
+    
+    // Estilo de fallback visual para depuración
+    target.style.display = 'none'; // Ocultamos la img rota
+    const parent = target.parentElement;
+    if (parent) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = "w-full h-40 flex flex-col items-center justify-center bg-red-900/50 border border-red-500 rounded p-4 text-center";
+      errorDiv.innerHTML = `<span class="text-white font-bold text-xs">Error cargando imagen</span><span class="text-red-300 text-[10px] break-all mt-1">${target.src.split('/').pop()}</span>`;
+      parent.appendChild(errorDiv);
+    }
+    console.error(`Error cargando imagen: ${target.src}`);
+  };
 
   return (
     // CAMBIO: order-1 en móvil (arriba), md:order-none (derecha/normal en desktop).
@@ -68,7 +87,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
           <div 
             key={`blur-${index}`}
             className={`absolute inset-0 bg-cover bg-center blur-3xl scale-110 transition-opacity duration-[2000ms] ease-in-out ${index === currentBgIndex ? 'opacity-30' : 'opacity-0'}`}
-            style={{ backgroundImage: `url(${img})` }}
+            style={{ backgroundImage: `url('${img}')` }}
           />
         ))}
         <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay" />
@@ -89,7 +108,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
                   transition-all duration-[2000ms] ease-in-out
                   ${index === currentBgIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}
                 `}
-                style={{ backgroundImage: `url(${img})` }}
+                style={{ backgroundImage: `url('${img}')` }}
               >
                  {/* Sombra interna para legibilidad en modo fill */}
                  {!event && (
@@ -106,7 +125,13 @@ const EventViewer: React.FC<EventViewerProps> = ({
       {/* 3. Overlay Oscuro (Solo activo cuando hay un evento seleccionado para oscurecer el fondo) */}
       <div className={`absolute inset-0 bg-black z-0 transition-opacity duration-700 pointer-events-none ${event ? 'opacity-90' : 'opacity-0'}`} />
       
-      <audio ref={audioRef} src={audioSrc} onEnded={onAudioEnded} />
+      {/* Audio Element con manejo de error */}
+      <audio 
+        ref={audioRef} 
+        src={audioSrc} 
+        onEnded={onAudioEnded} 
+        onError={(e) => console.error("Error cargando audio:", audioSrc)} 
+      />
       
       {/* CONTENIDO PRINCIPAL SCROLLABLE */}
       {/* Padding reducido en móvil */}
@@ -205,7 +230,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
                              <video src={event.videoUrl} controls autoPlay className="w-full h-full object-contain" playsInline />
                           ) : (
                              <div className="absolute inset-0 bg-cover bg-center flex items-center justify-center cursor-pointer group" 
-                                  style={{backgroundImage: `url(${event.image})`}} onClick={() => setVideoLoaded(true)}>
+                                  style={{backgroundImage: `url('${event.image}')`}} onClick={() => setVideoLoaded(true)}>
                                <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors" />
                                <div className="z-10 flex flex-col items-center gap-4">
                                   <button className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-neon-red/90 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
@@ -224,6 +249,7 @@ const EventViewer: React.FC<EventViewerProps> = ({
                           */}
                           <img 
                             src={event.image} 
+                            onError={handleImageError}
                             className="w-auto h-auto max-w-full md:max-w-3xl max-h-[20vh] md:max-h-[50vh] object-contain rounded-xl md:rounded-2xl shadow-2xl border border-white/20 bg-black/50" 
                             alt={event.title}
                           />
