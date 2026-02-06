@@ -15,13 +15,13 @@ export const STANDBY_IMAGES = [
   'images/Carrusel 3.jpeg',
   'images/Carrusel 4.jpeg',
   'images/Carrusel 5.jpeg',
-  'images/Carrusel 6.jpeg',
-  'images/Carrusel 7.jpeg',
-  'images/Carrusel 8.jpeg',
-  'images/Carrusel 9.jpeg',
-  'images/Carrusel 10.jpeg',
-  'images/Carrusel 11.jpeg',
-  'images/Carrusel 12.jpeg',
+  'images/Carrusel 6.jpg',
+  'images/Carrusel 7.jpg',
+  'images/Carrusel 8.jpg',
+  'images/Carrusel 9.jpg',
+  'images/Carrusel 10.jpg',
+  'images/Carrusel 11.jpg',
+  'images/Carrusel 12.jpg',
 ];
 
 export const LOBBY_AUDIO_TRACKS: LobbyTrack[] = [
