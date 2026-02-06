@@ -5,22 +5,20 @@ export const EVENT_DATE_ISO = '2026-05-02';
 
 // --- HELPER PARA DROPBOX ---
 // Convierte enlaces de visualización (www) en enlaces de recurso directo (dl)
-// y asegura que termine en dl=1 como solicitaste.
+// y asegura que termine en dl=1 para evitar problemas de reproducción.
 const db = (url: string) => {
   if (!url) return '';
   if (url.includes('dropbox.com')) {
     let newUrl = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
-    // Reemplazamos el parámetro final si existe para forzar dl=1
     newUrl = newUrl.replace('&dl=0', '&dl=1');
     return newUrl;
   }
   return url;
 };
 
-// --- ENLACES PROPORCIONADOS ---
+// --- ENLACES PROPORCIONADOS (MAPA DE ACTIVOS) ---
 
-// FOTOS (11 Imágenes proporcionadas)
-// Asignamos nombres cortos F1..F11
+// 1. FOTOS DEL CARRUSEL (Fondo y uso general)
 const F1  = 'https://www.dropbox.com/scl/fi/fgt7owr1929uhu9quf7s7/DSC00825.jpg?rlkey=2suo1mrqc9rwahyl23c33jsgl&st=i5n9mghh&dl=0';
 const F2  = 'https://www.dropbox.com/scl/fi/8akfqr80af7c191v6bbki/IMG_20181012_114144.jpg?rlkey=br76nll9ng61mudonzoen54bq&st=p12t9qrt&dl=0';
 const F3  = 'https://www.dropbox.com/scl/fi/ewuhwl5l5k7ddampon3u2/IMG_20181012_131809.jpg?rlkey=fdz9dmtagts100x8hpgcpdflr&st=lg40yl3u&dl=0';
@@ -33,7 +31,16 @@ const F9  = 'https://www.dropbox.com/scl/fi/zl62ztx6ip6cxktprmtil/IMG-20260204-W
 const F10 = 'https://www.dropbox.com/scl/fi/qdvo3j8niqcbfc5wznvv2/IMG-20260204-WA0024.jpg?rlkey=hzczqtji23hrrvt3ji2f02p5p&st=q4ijuzmi&dl=0';
 const F11 = 'https://www.dropbox.com/scl/fi/enupahk7sfrgy0ze18lok/Screenshot_20170417-190118.png?rlkey=75ewlolef1lhga1mleo42xk92&st=fdm6o6sh&dl=0';
 
-// CANCIONES PLAYLIST (1-7)
+// 2. FOTOS ESPECÍFICAS DE EVENTOS
+const IMG_DESAYUNO   = 'https://www.dropbox.com/scl/fi/tceail75sxqjs3p21c3ab/desayuno.jpg?rlkey=uerp4rrv2t0g2ipdn6pv1q7m9&st=g4g972pu&dl=0';
+const IMG_CARTA      = 'https://www.dropbox.com/scl/fi/2a9lu51i5qbqit0eplncp/sobre-del-arte-vintage-con-el-sello-rojo-de-la-cera-para-correspondencia-109498533.jpg?rlkey=5b2kzpn3fz6hyccu3ghzq83kq&st=loz70hyt&dl=0';
+const IMG_EXTRACCION = 'https://www.dropbox.com/scl/fi/udkjgw61tetva5bu6vpp0/detalle_Ch-fer-abriendo-la-puerta.jpg?rlkey=8uzgioa744bfkd01rbzsc9hxo&st=2jb74yd7&dl=0';
+const IMG_REGALO     = 'https://www.dropbox.com/scl/fi/zjfhgcpq4hwgkzq2wdukk/image.jpg?rlkey=qt1zpc6qsn4za6vrd22qcip44&st=dfvilmd7&dl=0';
+
+// 3. VIDEO
+const VIDEO_MAIN     = 'https://www.dropbox.com/scl/fi/sz5ugs4e4ft4fagptvkts/lv_0_20251224132333.mp4?rlkey=bxu21fuu7yf1q36tz1ua50rst&st=8v7lho0i&dl=0';
+
+// 4. CANCIONES PLAYLIST (1-7)
 const S1 = 'https://www.dropbox.com/scl/fi/urs8pcoqwnq8cbudjsx8k/1-seguiste-conmigo.mp3?rlkey=u4salako6za5xk1b0d5gtmkus&st=kk2skqn1&dl=0';
 const S2 = 'https://www.dropbox.com/scl/fi/cjdjqa0v1rn6ijypepn87/2-porque-est-s.mp3?rlkey=636voyy8amcnf76zf1xcdbo7m&st=4xnsesqs&dl=0';
 const S3 = 'https://www.dropbox.com/scl/fi/ryjv3etc672k3i80uns4y/3-mi-aliento.mp3?rlkey=d0nxzg1nny8y9y8f2nkerf8gi&st=3dasdbjx&dl=0';
@@ -42,19 +49,16 @@ const S5 = 'https://www.dropbox.com/scl/fi/qm9zo934w025oazuzcyk2/5-Luz-de-mi-sen
 const S6 = 'https://www.dropbox.com/scl/fi/eaf7uqsgm46tiax0vs6vw/6-Antes-de-verte.mp3?rlkey=tkrffbgqwqya0q00bnguk2dmm&st=5ijjf8qs&dl=0';
 const S7 = 'https://www.dropbox.com/scl/fi/kv2qk6u8qva2vo46ue767/7-Quedarse.mp3?rlkey=59f32u2m5hnuafqutcak8wrel&st=eqkn8t1j&dl=0';
 
-// INSTRUMENTALES LOBBY
+// 5. INSTRUMENTALES LOBBY
 const I_LUZ    = 'https://www.dropbox.com/scl/fi/v6bvoky0e6iotagbhatgl/Ailari-Leonor-Instrumental.mp3?rlkey=h2p5fpwu8pwcdndnv0655byyo&st=2tf1z2ql&dl=0';
 const I_MUNECA = 'https://www.dropbox.com/scl/fi/26vqhh81z8j7nehrj501c/mu-eca-single-LP-Instrumental.mp3?rlkey=7nhpc1s9tfnrz45g4z40or857&st=0xbwdoyk&dl=0';
 const I_PORQUE = 'https://www.dropbox.com/scl/fi/lg722hw45jkno44taam18/porque-est-s-V2-Instrumental.mp3?rlkey=i2g4xj1rcwd472im23in556bz&st=n01hy2tl&dl=0';
 const I_QUIZAS = 'https://www.dropbox.com/scl/fi/hohlm8qzyss5vhd6tfdsv/quiz-s-no-lo-sabias-LP-Instrumental.mp3?rlkey=qcub6k6whw12k02lu1c3o6d2v&st=adtn4jdi&dl=0';
 
-// VIDEO (No proporcionado en la lista, mantenemos local por seguridad, si tienes link de dropbox pégalo aquí)
-const VIDEO_MAIN = 'images/video 1.mp4';
-
 
 export const STANDBY_IMAGES = [
   db(F1), db(F2), db(F3), db(F4), db(F5), db(F6),
-  db(F7), db(F8), db(F9), db(F10), db(F11), db(F1) // Repetimos F1 para completar 12
+  db(F7), db(F8), db(F9), db(F10), db(F11)
 ];
 
 export const LOBBY_AUDIO_TRACKS: LobbyTrack[] = [
@@ -72,7 +76,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Inicialización del Sistema',
     description: 'Bienvenida a tus 40 años. El día comienza con lujo y una vista espectacular. Respira profundo, una nueva era comienza hoy con este desayuno especial.',
     location: 'Habitación Principal',
-    image: db(F1), // DSC00825
+    image: db(IMG_DESAYUNO),
     type: 'moment',
     hint: 'Próximo: Un artefacto brillante te espera...',
   },
@@ -83,7 +87,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Objeto Encriptado Detectado',
     description: 'Una pieza atemporal para un alma eterna. Abre la caja de terciopelo. Una cadena forjada para mantener los recuerdos cerca de tu corazón.',
     location: 'El Cuarto Azul',
-    image: db(F5), // IMG-2015...
+    image: db(IMG_REGALO),
     type: 'moment',
     hint: 'Próximo: Palabras destinadas solo para ti...',
   },
@@ -94,7 +98,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Archivo de Datos Personales',
     description: 'Mi Querida Abigail, \n\nCuarenta años no es solo una medida de tiempo, sino una medida de la luz que has traído a este mundo...',
     location: 'Lounge Privado',
-    image: db(F11), // Screenshot carta
+    image: db(IMG_CARTA), 
     type: 'letter',
     hint: 'Próximo: La frecuencia del día se revela...',
   },
@@ -105,7 +109,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Flujo de Audio Decodificado',
     description: 'Acceso concedido a la banda sonora "Abigail Vol. 40". Selecciona una pista para ver su letra.',
     location: 'Transmisión Global',
-    image: db(F6), // IMG-2018...
+    image: db(F6), // Usamos una foto del carrusel para la portada de la playlist
     type: 'playlist',
     playlist: [
       { 
@@ -160,7 +164,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Stream de Datos Visuales',
     description: 'Una compilación de mensajes de aquellos que te aman. Señales recibidas desde todos los rincones del mundo.',
     location: 'Cine de la Sala',
-    image: db(F3), // IMG_2018...
+    image: db(F3), // Miniatura para el video
     type: 'video',
     videoUrl: db(VIDEO_MAIN),
     hint: 'Próximo: Prepárate para la extracción...',
@@ -172,7 +176,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Coordenadas Subidas',
     description: 'El vehículo está esperando abajo. El destino es clasificado. Código de vestimenta: Icónico.',
     location: 'Calles de la Ciudad',
-    image: db(F7), // IMG-2024...
+    image: db(IMG_EXTRACCION),
     type: 'moment',
     hint: 'Próximo: La frecuencia final...',
   },
@@ -183,7 +187,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Velocidad Máxima',
     description: 'La hora dorada ha terminado. Ahora brillamos en la oscuridad. Bienvenida al evento principal.',
     location: 'Ubicación Secreta',
-    image: db(F8), // IMG-2026...
+    image: db(F8), // Foto más reciente para la noche
     type: 'music',
     hint: 'Sistema recargando para el año 41...',
   }
