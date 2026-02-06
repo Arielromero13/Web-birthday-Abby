@@ -3,11 +3,11 @@ import { TimelineEvent, LobbyTrack } from './types';
 
 export const EVENT_DATE_ISO = '2026-05-02';
 
-// --- RUTAS DE ARCHIVOS ---
-// IMPORTANTE: 
-// 1. Las carpetas 'images' y 'canciones' deben estar dentro de la carpeta 'public'.
-// 2. Se han quitado las barras iniciales ('/') para que funcione en GitHub Pages.
-// 3. Se ha cambiado la extensión a .jpeg según tu repositorio.
+// --- RUTAS LOCALES (OFFLINE/ONLINE) ---
+// La aplicación buscará los archivos en tu carpeta 'public'.
+// Asegúrate de que existan:
+// - public/images/Carrusel 1.jpeg
+// - public/canciones/1 seguiste conmigo.mp3
 
 export const STANDBY_IMAGES = [
   'images/Carrusel 1.jpeg',
@@ -15,13 +15,13 @@ export const STANDBY_IMAGES = [
   'images/Carrusel 3.jpeg',
   'images/Carrusel 4.jpeg',
   'images/Carrusel 5.jpeg',
-  'images/Carrusel 6.jpg',
-  'images/Carrusel 7.jpg',
-  'images/Carrusel 8.jpg',
-  'images/Carrusel 9.jpg',
-  'images/Carrusel 10.jpg',
-  'images/Carrusel 11.jpg',
-  'images/Carrusel 12.jpg',
+  'images/Carrusel 6.jpeg',
+  'images/Carrusel 7.jpeg',
+  'images/Carrusel 8.jpeg',
+  'images/Carrusel 9.jpeg',
+  'images/Carrusel 10.jpeg',
+  'images/Carrusel 11.jpeg',
+  'images/Carrusel 12.jpeg',
 ];
 
 export const LOBBY_AUDIO_TRACKS: LobbyTrack[] = [
@@ -39,7 +39,6 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Inicialización del Sistema',
     description: 'Bienvenida a tus 40 años. El día comienza con lujo y una vista espectacular. Respira profundo, una nueva era comienza hoy con este desayuno especial.',
     location: 'Habitación Principal',
-    // Asumimos .jpeg para consistencia con el carrusel, si falla verifica si esta es .jpg
     image: 'images/Miniatura desayuno.jpeg',
     type: 'moment',
     hint: 'Próximo: Un artefacto brillante te espera...',
