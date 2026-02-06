@@ -3,22 +3,25 @@ import { TimelineEvent, LobbyTrack } from './types';
 
 export const EVENT_DATE_ISO = '2026-05-02';
 
-// NOTA: No pongas "/" al principio. Usa rutas relativas puras.
-// El sistema de EventViewer se encargará de codificar los espacios y paréntesis.
+// --- RUTAS DE ARCHIVOS ---
+// IMPORTANTE: 
+// 1. Las carpetas 'images' y 'canciones' deben estar dentro de la carpeta 'public'.
+// 2. Se han quitado las barras iniciales ('/') para que funcione en GitHub Pages.
+// 3. Se ha cambiado la extensión a .jpeg según tu repositorio.
 
 export const STANDBY_IMAGES = [
-  'images/Carrusel 1.jpg',
-  'images/Carrusel 2.jpg',
-  'images/Carrusel 3.jpg',
-  'images/Carrusel 4.jpg',
-  'images/Carrusel 5.jpg',
-  'images/Carrusel 6.jpg',
-  'images/Carrusel 7.jpg',
-  'images/Carrusel 8.jpg',
-  'images/Carrusel 9.jpg',
-  'images/Carrusel 10.jpg',
-  'images/Carrusel 11.jpg',
-  'images/Carrusel 12.jpg',
+  'images/Carrusel 1.jpeg',
+  'images/Carrusel 2.jpeg',
+  'images/Carrusel 3.jpeg',
+  'images/Carrusel 4.jpeg',
+  'images/Carrusel 5.jpeg',
+  'images/Carrusel 6.jpeg',
+  'images/Carrusel 7.jpeg',
+  'images/Carrusel 8.jpeg',
+  'images/Carrusel 9.jpeg',
+  'images/Carrusel 10.jpeg',
+  'images/Carrusel 11.jpeg',
+  'images/Carrusel 12.jpeg',
 ];
 
 export const LOBBY_AUDIO_TRACKS: LobbyTrack[] = [
@@ -36,7 +39,8 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Inicialización del Sistema',
     description: 'Bienvenida a tus 40 años. El día comienza con lujo y una vista espectacular. Respira profundo, una nueva era comienza hoy con este desayuno especial.',
     location: 'Habitación Principal',
-    image: 'images/Miniatura desayuno.jpg',
+    // Asumimos .jpeg para consistencia con el carrusel, si falla verifica si esta es .jpg
+    image: 'images/Miniatura desayuno.jpeg',
     type: 'moment',
     hint: 'Próximo: Un artefacto brillante te espera...',
   },
@@ -47,7 +51,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Objeto Encriptado Detectado',
     description: 'Una pieza atemporal para un alma eterna. Abre la caja de terciopelo. Una cadena forjada para mantener los recuerdos cerca de tu corazón.',
     location: 'El Cuarto Azul',
-    image: 'images/Carrusel 5.jpg', 
+    image: 'images/Carrusel 5.jpeg', 
     type: 'moment',
     hint: 'Próximo: Palabras destinadas solo para ti...',
   },
@@ -58,7 +62,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Archivo de Datos Personales',
     description: 'Mi Querida Abigail, \n\nCuarenta años no es solo una medida de tiempo, sino una medida de la luz que has traído a este mundo...',
     location: 'Lounge Privado',
-    image: 'images/Miniatura carta.jpg', 
+    image: 'images/Miniatura carta.jpeg', 
     type: 'letter',
     hint: 'Próximo: La frecuencia del día se revela...',
   },
@@ -69,7 +73,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Flujo de Audio Decodificado',
     description: 'Acceso concedido a la banda sonora "Abigail Vol. 40". Selecciona una pista para ver su letra.',
     location: 'Transmisión Global',
-    image: 'images/Carrusel 8.jpg', 
+    image: 'images/Carrusel 8.jpeg', 
     type: 'playlist',
     playlist: [
       { 
@@ -94,7 +98,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
         title: "Quizás no lo sabías", 
         artist: "Ariel Romero", 
         audioUrl: 'canciones/4 Quizás no lo sabias.mp3',
-        lyrics: `[Verse 1]\nTienes una forma honesta\nDe mirar la realidad\nNo prometes lo imposible\nPero cumples de verdad\nHaces fácil lo correcto\nAunque cueste un poco más\nY sin darte cuenta enseñas\nCómo se debe caminar\n\n[Pre-Chorus]\nTal var no lo ves en ti\nPero se nota al pasar\nDonde otros dudan o se rompen\nTú no sueltas, sabes estar\n\n[Chorus]\nY yo\nTe miro y lo entiendo\nEres más fuerte de lo que crees\nMás clara de lo que dices\nTienes una luz tranquila\nQue no pide atención\nY si el mundo no lo nota\nHoy lo digo yo\n\n[Verse 2]\nTienes manos que construyen\nSin hacer ruido al llegar\nUna paciencia valiente\nQue no se aprende en ningún lugar\nSabes cuidar lo importante\nSin dejar de soñar\nY haces que creer en el bien\nNo parezca ingenuidad\n\n[Pre-Chorus]\nTal vez nadie te enseñó\nA mirarte desde afuera\nPero hay verdad en tu forma\nY belleza en tu manera\n\n[Chorus]\nY yo\nTe miro y lo entiendo\nEres más firme de lo que ves\nMás grande de lo que imaginas\nTienes una luz tranquila\nQue ordena el corazón\nY si el mundo no lo dice\nHoy lo digo yo\n\n[Bridge]\nNo es solo amor lo que siento\nEs respeto y admiración\nEs saber que caminar contigo\nMe hace mejor\n\n[Final Chorus]\nY yo\nSi volviera a empezar de cero\nTe elegiría otra vez\nSin dudar ni un segundo\nPorque hay belleza en tu carácter\nY verdad en tu voz\nY amar así, con lo que eres\nSe siente nuevo\nComo la primera vez\n\n[Outro]\nTal vez no lo sabías\nTal vez nadie lo dijo\nPero cuando sonríes\nAsí te veo yo`
+        lyrics: `[Verse 1]\nTienes una forma honesta\nDe mirar la realidad\nNo prometes lo imposible\nPero cumples de verdad\nHaces fácil lo correcto\nAunque cueste un poco más\nY sin darte cuenta enseñas\nCómo se debe caminar\n\n[Pre-Chorus]\nTal vez no lo ves en ti\nPero se nota al pasar\nDonde otros dudan o se rompen\nTú no sueltas, sabes estar\n\n[Chorus]\nY yo\nTe miro y lo entiendo\nEres más fuerte de lo que crees\nMás clara de lo que dices\nTienes una luz tranquila\nQue no pide atención\nY si el mundo no lo nota\nHoy lo digo yo\n\n[Verse 2]\nTienes manos que construyen\nSin hacer ruido al llegar\nUna paciencia valiente\nQue no se aprende en ningún lugar\nSabes cuidar lo importante\nSin dejar de soñar\nY haces que creer en el bien\nNo parezca ingenuidad\n\n[Pre-Chorus]\nTal vez nadie te enseñó\nA mirarte desde afuera\nPero hay verdad en tu forma\nY belleza en tu manera\n\n[Chorus]\nY yo\nTe miro y lo entiendo\nEres más firme de lo que ves\nMás grande de lo que imaginas\nTienes una luz tranquila\nQue ordena el corazón\nY si el mundo no lo dice\nHoy lo digo yo\n\n[Bridge]\nNo es solo amor lo que siento\nEs respeto y admiración\nEs saber que caminar contigo\nMe hace mejor\n\n[Final Chorus]\nY yo\nSi volviera a empezar de cero\nTe elegiría otra vez\nSin dudar ni un segundo\nPorque hay belleza en tu carácter\nY verdad en tu voz\nY amar así, con lo que eres\nSe siente nuevo\nComo la primera vez\n\n[Outro]\nTal vez no lo sabías\nTal vez nadie lo dijo\nPero cuando sonríes\nAsí te veo yo`
       },
       { 
         title: "Luz de mi sendero", 
@@ -124,7 +128,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Stream de Datos Visuales',
     description: 'Una compilación de mensajes de aquellos que te aman. Señales recibidas desde todos los rincones del mundo.',
     location: 'Cine de la Sala',
-    image: 'images/Carrusel 3.jpg', 
+    image: 'images/Carrusel 3.jpeg', 
     type: 'video',
     videoUrl: 'images/video 1.mp4',
     hint: 'Próximo: Prepárate para la extracción...',
@@ -136,7 +140,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Coordenadas Subidas',
     description: 'El vehículo está esperando abajo. El destino es clasificado. Código de vestimenta: Icónico.',
     location: 'Calles de la Ciudad',
-    image: 'images/Miniatura la extraccion.jpg',
+    image: 'images/Miniatura la extraccion.jpeg',
     type: 'moment',
     hint: 'Próximo: La frecuencia final...',
   },
@@ -147,7 +151,7 @@ export const EVENTS_SCHEDULE: TimelineEvent[] = [
     lockedTitle: 'Velocidad Máxima',
     description: 'La hora dorada ha terminado. Ahora brillamos en la oscuridad. Bienvenida al evento principal.',
     location: 'Ubicación Secreta',
-    image: 'images/Miniatura modo noche.jpg',
+    image: 'images/Miniatura modo noche.jpeg',
     type: 'music',
     hint: 'Sistema recargando para el año 41...',
   }
